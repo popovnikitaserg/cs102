@@ -1,6 +1,3 @@
-"""
-Лабораторная работа 4: генерация и решение лабиринта
-"""
 from copy import deepcopy
 from random import choice, randint
 from typing import List, Optional, Tuple, Union
