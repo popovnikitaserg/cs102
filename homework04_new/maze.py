@@ -48,6 +48,17 @@ def bin_tree_maze(
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
 
+    # генерация входа и выхода
+    if random_exit:
+        x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
+        y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
+        y_out = randint(0, cols - 1) if x_out in (0, rows - 1) else choice((0, cols - 1))
+    else:
+        x_in, y_in = 0, cols - 2
+        x_out, y_out = rows - 1, 1
+
+    grid[x_in][y_in], grid[x_out][y_out] = "X", "X"
+
     return grid
 
 
