@@ -51,12 +51,12 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     if phi == 1:
         return 0
     while e > 1:
-        q = e // phi
+        z = e // phi
         t = phi
         phi = e % phi
         e = t
         t = y
-        y = x - q * y
+        y = x - z * y
         x = t
     if x < 0:
         x = x + m0
@@ -89,7 +89,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
     # Return public and private keypair
     # Public key is (e, n) and private key is (d, n)
-    return ((e, n), (d, n))
+    return (e, n), (d, n)
 
 
 def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:

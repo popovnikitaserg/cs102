@@ -58,4 +58,3 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         else:
             plaintext += ciphertext[i]
     return plaintext
-
