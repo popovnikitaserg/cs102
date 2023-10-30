@@ -19,10 +19,13 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
             key_ord = [ord(i) for i in keyword]
     plaintext_ord = [ord(i) for i in plaintext]
     for i in range(len(plaintext)):
-        if plaintext[i].isupper():
-            ciphertext += chr(((plaintext_ord[i] + key_ord[i % key_lenght]) % 26) + 65)
-        elif plaintext[i].islower():
-            ciphertext += chr(((plaintext_ord[i] - 12 + key_ord[i % key_lenght]) % 26) + 97)
+        if plaintext[i].isalpha():
+            if plaintext[i].isupper():
+                ciphertext += chr(((plaintext_ord[i] + key_ord[i % key_lenght]) % 26) + 65)
+            elif plaintext[i].islower():
+                ciphertext += chr(((plaintext_ord[i] - 12 + key_ord[i % key_lenght]) % 26) + 97)
+        else:
+            ciphertext += plaintext[i]
     return ciphertext
 
 
@@ -47,9 +50,12 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
             key_ord = [ord(i) for i in keyword]
     ciphertext_ord = [ord(i) for i in ciphertext]
     for i in range(len(ciphertext)):
-        if ciphertext[i].isupper():
-            plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + 65)
-        elif ciphertext[i].islower():
-            plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + 97)
+        if ciphertext[i].isalpha():
+            if ciphertext[i].isupper():
+                plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + 65)
+            elif ciphertext[i].islower():
+                plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + 97)
+        else:
+            plaintext += ciphertext[i]
     return plaintext
 
