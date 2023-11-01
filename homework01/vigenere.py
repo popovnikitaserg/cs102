@@ -20,9 +20,9 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     for i, value in enumerate(plaintext):
         if value.isalpha():
             if value.isupper():
-                ciphertext += chr(((plaintext_ord[i] + key_ord[i % key_lenght]) % 26) + ord('A'))
+                ciphertext += chr(((plaintext_ord[i] + key_ord[i % key_lenght]) % 26) + ord("A"))
             elif value.islower():
-                ciphertext += chr(((plaintext_ord[i] - 12 + key_ord[i % key_lenght]) % 26) + ord('a'))
+                ciphertext += chr(((plaintext_ord[i] - 12 + key_ord[i % key_lenght]) % 26) + ord("a"))
         else:
             ciphertext += plaintext[i]
     return ciphertext
@@ -50,9 +50,9 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     for i, value in enumerate(ciphertext):
         if value.isalpha():
             if value.isupper():
-                plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + ord('A'))
+                plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + ord("A"))
             elif value.islower():
-                plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + ord('a'))
+                plaintext += chr(((ciphertext_ord[i] - key_ord[i % key_lenght]) % 26) + ord("a"))
         else:
             plaintext += ciphertext[i]
     return plaintext
