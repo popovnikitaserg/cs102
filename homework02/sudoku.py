@@ -193,6 +193,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     True
     """
     import random as rn
+    
     grid = [["." for i in range(9)] for j in range(9)]
     grid = solve(grid)
     counter = 81 - N
@@ -214,4 +215,3 @@ if __name__ == "__main__":
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
-            
