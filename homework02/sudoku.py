@@ -99,6 +99,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
         for j in range(len(grid[i])):
             if grid[i][j] == ".":
                 return (i, j)
+    return
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
@@ -151,7 +152,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     # TODO: Add doctests with bad puzzles
     for row in range(len(solution)):
         for col in range(len(solution)):
-            if solution[row][col] not in "123456789":
+            if solution[row][col] not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 return False
     for row in solution:
         if len(set(row)) != 9:
