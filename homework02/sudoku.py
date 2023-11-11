@@ -194,7 +194,17 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    import random as rn
+    grid = [['.' for i in range(9)] for j in range(9)]
+    grid = solve(grid)
+    counter = 81 - N
+    while counter > 0:
+        i = rn.randint(0, 8)
+        j = rn.randint(0, 8)
+        if grid[i][j] != '.':
+            grid[i][j] = '.'
+            counter -= 1
+    return grid
 
 
 if __name__ == "__main__":
