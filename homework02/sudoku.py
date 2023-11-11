@@ -204,7 +204,8 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     grid = None
     grid = [["." for i in range(9)] for j in range(9)]
     grid = solve(grid)
-    grid = list(grid)
+    grid = [grid]
+    grid = grid[0]
     counter = 81 - N
     while counter > 0:
         i = rn.randint(0, 8)
