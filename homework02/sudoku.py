@@ -145,7 +145,7 @@ def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
                     return grid
                 else:
                     grid[row][col] = "."
-    return
+    return None
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
