@@ -133,17 +133,16 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     """
     if find_empty_positions(grid) != None:
         pos = find_empty_positions(grid)
-        row, col = pos
     if find_empty_positions(grid) == None:
         return grid
     values = find_possible_values(grid, pos)
     for i in values:
         if len(values) > 0:
-            grid[row][col] = i
+            grid[pos[0]][pos[1]] = i
             if solve(grid):
                 return grid
             else:
-                grid[row][col] = "."
+                grid[pos[0]][pos[1]] = "."
     return
 
 
