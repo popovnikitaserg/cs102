@@ -148,7 +148,29 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
-    pass
+    for row in range(len(solution)):
+        for col in range(len(solution)):
+            if solution[row][col] not in '123456789':
+                return False
+    for row in solution:
+        if len(set(row)) != 9:
+            return False
+    columns = []
+    for col in range(len(solution)):
+        for row in solution:
+            columns += [row[col]]
+        if len(set(columns)) != 9:
+            return False
+        columns = []
+    for row in range(0, 9, 3):
+        for col in range(0, 9, 3):
+            vals = solution[row][col: col + 3]
+            vals.extend(solution[row + 1][col: col + 3])
+            vals.extend(solution[row + 2][col: col + 3])
+            if len(set(vals)) != 9:
+                return False
+            vals = []
+    return True
 
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
