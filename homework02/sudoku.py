@@ -41,7 +41,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     return [values[i : i + n] for i in range(0, len(values), n)]
 
 
-def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
+def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int] | None) -> tp.List[str]:
     """Возвращает все значения для номера строки, указанной в pos
     >>> get_row([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0))
     ['1', '2', '.']
@@ -53,7 +53,7 @@ def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     return grid[pos[0]]
 
 
-def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
+def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int] | None) -> tp.List[str]:
     """Возвращает все значения для номера столбца, указанного в pos
     >>> get_col([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0))
     ['1', '4', '7']
@@ -65,7 +65,7 @@ def get_col(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str
     return [tuple(i for i in grid[j][pos[1]])[0] for j in range(len(grid))]
 
 
-def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
+def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int] | None) -> tp.List[str]:
     """Возвращает все значения из квадрата, в который попадает позиция pos
     >>> grid = read_sudoku('puzzle1.txt')
     >>> get_block(grid, (0, 1))
@@ -136,14 +136,15 @@ def solve(grid: tp.List[tp.List[str]]) -> list[list[str]] | None:
         return grid
     else:
         pos = find_empty_positions(grid)
+        row, col = pos
         values = find_possible_values(grid, pos)
         for i in values:
             if len(values) > 0:
-                grid[pos[0]][pos[1]] = i
+                grid[row][col] = i
                 if solve(grid):
                     return grid
                 else:
-                    grid[pos[0]][pos[1]] = "."
+                    grid[row][col] = "."
     return None
 
 
