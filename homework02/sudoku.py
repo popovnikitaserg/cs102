@@ -5,7 +5,7 @@ T = tp.TypeVar("T")
 
 
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
-    """ Прочитать Судоку из указанного файла """
+    """Прочитать Судоку из указанного файла"""
     path = pathlib.Path(path)
     with path.open() as f:
         puzzle = f.read()
@@ -19,15 +19,11 @@ def create_grid(puzzle: str) -> tp.List[tp.List[str]]:
 
 
 def display(grid: tp.List[tp.List[str]]) -> None:
-    """Вывод Судоку """
+    """Вывод Судоку"""
     width = 2
     line = "+".join(["-" * (width * 3)] * 3)
     for row in range(9):
-        print(
-            "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
-            )
-        )
+        print("".join(grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)))
         if str(row) in "25":
             print(line)
     print()
@@ -41,7 +37,7 @@ def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    return [values[i:i+n] for i in range(0, len(values), n)]
+    return [values[i : i + n] for i in range(0, len(values), n)]
 
 
 def get_row(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[str]:
@@ -80,8 +76,10 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     """
     b = []
     for i in range(3):
-        a = [[[i for i in grid[k][j]] for j in range(pos[1] - pos[1] % 3, i + pos[1] - pos[1] % 3 + 1)] for k in
-             range(pos[0] - pos[0] % 3, i + pos[0] - pos[0] % 3 + 1)]
+        a = [
+            [[i for i in grid[k][j]] for j in range(pos[1] - pos[1] % 3, i + pos[1] - pos[1] % 3 + 1)]
+            for k in range(pos[0] - pos[0] % 3, i + pos[0] - pos[0] % 3 + 1)
+        ]
     for i in range(len(a)):
         for j in range(len(a[i])):
             b.append(a[i][j][0])
@@ -99,7 +97,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     """
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            if grid[i][j] == '.':
+            if grid[i][j] == ".":
                 return (i, j)
 
 
@@ -121,7 +119,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    """ Решение пазла, заданного в grid """
+    """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
         2. Найти все возможные значения, которые могут находиться на этой позиции
@@ -142,15 +140,15 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
             if solve(grid):
                 return grid
             else:
-                grid[pos[0]][pos[1]] = '.'
+                grid[pos[0]][pos[1]] = "."
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
-    """ Если решение solution верно, то вернуть True, в противном случае False """
+    """Если решение solution верно, то вернуть True, в противном случае False"""
     # TODO: Add doctests with bad puzzles
     for row in range(len(solution)):
         for col in range(len(solution)):
-            if solution[row][col] not in '123456789':
+            if solution[row][col] not in "123456789":
                 return False
     for row in solution:
         if len(set(row)) != 9:
@@ -164,9 +162,9 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
         columns = []
     for row in range(0, 9, 3):
         for col in range(0, 9, 3):
-            vals = solution[row][col: col + 3]
-            vals.extend(solution[row + 1][col: col + 3])
-            vals.extend(solution[row + 2][col: col + 3])
+            vals = solution[row][col : col + 3]
+            vals.extend(solution[row + 1][col : col + 3])
+            vals.extend(solution[row + 2][col : col + 3])
             if len(set(vals)) != 9:
                 return False
             vals = []
@@ -195,14 +193,14 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     True
     """
     import random as rn
-    grid = [['.' for i in range(9)] for j in range(9)]
+    grid = [["." for i in range(9)] for j in range(9)]
     grid = solve(grid)
     counter = 81 - N
     while counter > 0:
         i = rn.randint(0, 8)
         j = rn.randint(0, 8)
-        if grid[i][j] != '.':
-            grid[i][j] = '.'
+        if grid[i][j] != ".":
+            grid[i][j] = "."
             counter -= 1
     return grid
 
@@ -216,3 +214,4 @@ if __name__ == "__main__":
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+            
