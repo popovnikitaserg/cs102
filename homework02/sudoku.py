@@ -120,7 +120,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     return a
 
 
-def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
+def solve(grid: tp.List[tp.List[str]]) -> list[list[str]] | None:
     """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
