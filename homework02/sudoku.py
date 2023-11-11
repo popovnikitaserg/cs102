@@ -147,6 +147,7 @@ def solve(grid: tp.List[tp.List[str]]) -> list[list[str]] | None:
                     grid[row][col] = "."
     return
 
+
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
     # TODO: Add doctests with bad puzzles
