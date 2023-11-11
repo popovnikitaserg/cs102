@@ -1,6 +1,6 @@
 import pathlib
 import typing as tp
-from typing import List, Tuple
+from typing import List, Tuple, NoReturn
 
 T = tp.TypeVar("T")
 
@@ -87,7 +87,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     return b
 
 
-def find_empty_positions(grid: tp.List[tp.List[str]]) -> tuple[int, int]:
+def find_empty_positions(grid: tp.List[tp.List[str]]) -> tuple[int, int] | None:
     """Найти первую свободную позицию в пазле
     >>> find_empty_positions([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']])
     (0, 2)
@@ -100,8 +100,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tuple[int, int]:
         for j in range(len(grid[i])):
             if grid[i][j] == ".":
                 return i, j
-            else:
-                continue
+    return
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
@@ -121,7 +120,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     return a
 
 
-def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
+def solve(grid: tp.List[tp.List[str]]) -> list[list[str]] | None:
     """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
@@ -146,7 +145,7 @@ def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
                     return grid
                 else:
                     grid[row][col] = "."
-
+    return
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
