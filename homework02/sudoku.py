@@ -1,6 +1,6 @@
 import pathlib
 import typing as tp
-from typing import List, Tuple, NoReturn
+from typing import List, Tuple
 
 T = tp.TypeVar("T")
 
