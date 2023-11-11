@@ -98,7 +98,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             if grid[i][j] == ".":
-                return (i, j)
+                return i, j
     return None
 
 
@@ -153,13 +153,13 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
         for col in range(len(solution)):
             if solution[row][col] not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 return False
-    for row in solution:
-        if len(set(row)) != 9:
+    for row1 in solution:
+        if len(set(row1)) != 9:
             return False
     columns = []
     for col in range(len(solution)):
-        for row in solution:
-            columns += [row[col]]
+        for row1 in solution:
+            columns += [row1[col]]
         if len(set(columns)) != 9:
             return False
         columns = []
