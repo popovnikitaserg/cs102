@@ -199,7 +199,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     """
     import random as rn
 
-    grid = ([["." for i in range(9)] for j in range(9)] or None)
+    grid = [["." for i in range(9)] for j in range(9)] or None
     grid = solve(grid)
     counter = 81 - N
     while counter > 0:
