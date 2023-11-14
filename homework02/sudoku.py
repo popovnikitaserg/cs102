@@ -1,6 +1,5 @@
 import pathlib
 import typing as tp
-from typing import List, Tuple
 
 T = tp.TypeVar("T")
 
@@ -8,7 +7,7 @@ T = tp.TypeVar("T")
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
     """Прочитать Судоку из указанного файла"""
     path = pathlib.Path(path)
-    with path.open() as f:
+    with path.open(encoding="utf-8") as f:
         puzzle = f.read()
     return create_grid(puzzle)
 
@@ -81,9 +80,9 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
             [[i for i in grid[k][j]] for j in range(pos[1] - pos[1] % 3, i + pos[1] - pos[1] % 3 + 1)]
             for k in range(pos[0] - pos[0] % 3, i + pos[0] - pos[0] % 3 + 1)
         ]
-    for i in range(len(a)):
-        for j in range(len(a[i])):
-            b.append(a[i][j][0])
+    for i, value in enumerate(a):
+        for j in enumerate(value):
+            b.append(value[j[0]][0])
     return b
 
 
@@ -96,10 +95,10 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tuple[int, int]:
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    for i in range(len(grid)):
-        for j in range(len(grid[i])):
-            if grid[i][j] == ".":
-                return i, j
+    for i, value in enumerate(grid):
+        for j in enumerate(value):
+            if value[j[0]] == ".":
+                return i, j[0]
     return -1, -1
 
 
@@ -121,36 +120,34 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 
 
 def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
-    """Решение пазла, заданного в grid"""
-    """ Как решать Судоку?
-        1. Найти свободную позицию
-        2. Найти все возможные значения, которые могут находиться на этой позиции
-        3. Для каждого возможного значения:
-            3.1. Поместить это значение на эту позицию
-            3.2. Продолжить решать оставшуюся часть пазла
+    # Как решать Судоку?
+    # 1. Найти свободную позицию
+    # 2. Найти все возможные значения, которые могут находиться на этой позиции
+    # 3. Для каждого возможного значения:
+    # 3.1. Поместить это значение на эту позицию
+    # 3.2. Продолжить решать оставшуюся часть пазла
+    """Решение пазла, заданного в grid
     >>> grid = read_sudoku('puzzle1.txt')
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
     if find_empty_positions(grid) == (-1, -1) or len(find_possible_values(grid, find_empty_positions(grid))) == 0:
         return grid
-    else:
-        for i in find_possible_values(grid, find_empty_positions(grid)):
-            row, col = find_empty_positions(grid)
-            grid[row][col] = i
-            solve(grid)
-            if find_empty_positions(grid) == (-1, -1):
-                break
-            grid[row][col] = "."
+    for i in find_possible_values(grid, find_empty_positions(grid)):
+        row, col = find_empty_positions(grid)
+        grid[row][col] = i
+        solve(grid)
+        if find_empty_positions(grid) == (-1, -1):
+            break
+        grid[row][col] = "."
     return grid
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
-    # TODO: Add doctests with bad puzzles
-    for row in range(len(solution)):
-        for col in range(len(solution)):
-            if solution[row][col] not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+    for row, value in enumerate(solution):
+        for col in enumerate(solution):
+            if value[col[0]] not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 return False
     for row1 in solution:
         if len(set(row1)) != 9:
