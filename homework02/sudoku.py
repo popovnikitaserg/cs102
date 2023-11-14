@@ -120,7 +120,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     return a
 
 
-def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[list[list[str]]]:
+def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
     """Решение пазла, заданного в grid"""
     """ Как решать Судоку?
         1. Найти свободную позицию
@@ -132,22 +132,18 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[list[list[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    if find_empty_positions(grid) == (-1, -1):
+    if find_empty_positions(grid) == (-1, -1) or len(find_possible_values(grid, find_empty_positions(grid))) == 0:
         return grid
     else:
-        pos = find_empty_positions(grid)
-        row, col = pos
-        values = find_possible_values(grid, pos)
-        for i in values:
-            if len(values) > 0:
-                grid[row][col] = i
-                if solve(grid):
-                    return grid
-                else:
-                    grid[row][col] = "."
-            else:
-                continue
-    return None
+        for i in find_possible_values(grid, find_empty_positions(grid)):
+            row, col = find_empty_positions(grid)
+            grid[row][col] = i
+            solve(grid)
+            if find_empty_positions(grid) == (-1, -1):
+                break
+            grid[row][col] = "."
+    return grid
+
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
@@ -178,7 +174,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     return True
 
 
-def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
+def generate_sudoku(N: int) -> tp.Optional[tp.List[tp.List[str]]]:
     """Генерация судоку заполненного на N элементов
     >>> grid = generate_sudoku(40)
     >>> sum(1 for row in grid for e in row if e == '.')
@@ -201,11 +197,8 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     """
     import random as rn
 
-    grid = None
     grid = [["." for i in range(9)] for j in range(9)]
     grid = solve(grid)
-    grid = [grid]
-    grid = grid[0]
     counter = 81 - N
     while counter > 0:
         i = rn.randint(0, 8)
