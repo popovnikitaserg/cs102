@@ -153,17 +153,17 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
         if len(set(row1)) != 9:
             return False
     columns = []
-    for col in range(len(solution)):
+    for col1 in range(len(solution)):
         for row1 in solution:
-            columns += [row1[col]]
+            columns += [row1[col1]]
         if len(set(columns)) != 9:
             return False
         columns = []
     for row in range(0, 9, 3):
-        for col in range(0, 9, 3):
-            vals = solution[row][col : col + 3]
-            vals.extend(solution[row + 1][col : col + 3])
-            vals.extend(solution[row + 2][col : col + 3])
+        for col2 in range(0, 9, 3):
+            vals = solution[row][col2 : col2 + 3]
+            vals.extend(solution[row + 1][col2 : col2 + 3])
+            vals.extend(solution[row + 2][col2 : col2 + 3])
             if len(set(vals)) != 9:
                 return False
             vals = []
