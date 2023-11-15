@@ -145,16 +145,16 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     for _, value in enumerate(solution):
         for _, inside_value in enumerate(value):
             if inside_value not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-                return False
+                return inside_value in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     for row1 in solution:
         if len(set(row1)) != 9:
-            return False
+            return len(set(row1)) == 9
     columns = []
     for col1 in range(len(solution)):
         for row1 in solution:
             columns += [row1[col1]]
         if len(set(columns)) != 9:
-            return False
+            return len(set(columns)) == 9
         columns = []
     for row in range(0, 9, 3):
         for col2 in range(0, 9, 3):
@@ -162,7 +162,7 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
             vals.extend(solution[row + 1][col2 : col2 + 3])
             vals.extend(solution[row + 2][col2 : col2 + 3])
             if len(set(vals)) != 9:
-                return False
+                return len(set(vals)) == 9
             vals = []
     return True
 
