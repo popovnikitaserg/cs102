@@ -1,5 +1,6 @@
 import pathlib
 import typing as tp
+import random as rn
 
 T = tp.TypeVar("T")
 
@@ -74,15 +75,13 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    b = []
-    for i in range(3):
-        a = [
-            [[i for i in grid[k][j]] for j in range(pos[1] - pos[1] % 3, i + pos[1] - pos[1] % 3 + 1)]
-            for k in range(pos[0] - pos[0] % 3, i + pos[0] - pos[0] % 3 + 1)
-        ]
-    for i, value in enumerate(a):
-        for j in enumerate(value):
-            b.append(value[j[0]][0])
+    n = 2
+    a = [
+        [i[0] for i in grid[j][k]]
+        for j in range(pos[0] - pos[0] % 3, n + pos[0] - pos[0] % 3 + 1)
+        for k in range(pos[1] - pos[1] % 3, n + pos[1] - pos[1] % 3 + 1)
+    ]
+    b = [i[0] for i in a]
     return b
 
 
@@ -96,9 +95,9 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tuple[int, int]:
     (2, 0)
     """
     for i, value in enumerate(grid):
-        for j in enumerate(value):
-            if value[j[0]] == ".":
-                return i, j[0]
+        for j, inside_value in enumerate(value):
+            if inside_value == ".":
+                return i, j
     return -1, -1
 
 
@@ -112,10 +111,8 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    a = set()
-    for i in range(1, 10):
-        if str(i) not in get_row(grid, pos) and str(i) not in get_col(grid, pos) and str(i) not in get_block(grid, pos):
-            a.add(str(i))
+    a = set(str(i) for i in range(1, 10))
+    a = a - set(get_col(grid, pos)) - set(get_row(grid, pos)) - set(get_block(grid, pos))
     return a
 
 
@@ -145,9 +142,9 @@ def solve(grid: tp.List[tp.List[str]]) -> list[list[str]]:
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
-    for row, value in enumerate(solution):
-        for col in enumerate(solution):
-            if value[col[0]] not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+    for _, value in enumerate(solution):
+        for _, inside_value in enumerate(value):
+            if inside_value not in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 return False
     for row1 in solution:
         if len(set(row1)) != 9:
@@ -191,8 +188,6 @@ def generate_sudoku(N: int) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> check_solution(solution)
     True
     """
-    import random as rn
-
     grid = [["." for i in range(9)] for j in range(9)]
     grid = solve(grid)
     counter = 81 - N
