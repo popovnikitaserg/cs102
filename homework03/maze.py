@@ -19,7 +19,21 @@ def remove_wall(
     :return:
     """
 
-    pass
+    x, y = coord
+    y, x = x, y
+    grid_width, grid_height = len(grid[0]) - 2, len(grid) - 2
+    if x != grid_width:
+        if choice((0, 1)) == 0:
+            if y != 1:
+                grid[y - 1][x] = " "
+            else:
+                grid[y][x + 1] = " "
+        else:
+            grid[y][x + 1] = " "
+    else:
+        if y != 1:
+            grid[y - 1][x] = " "
+    return grid
 
 
 def bin_tree_maze(
@@ -47,6 +61,9 @@ def bin_tree_maze(
     # выбрать второе возможное направление
     # 3. перейти в следующую клетку, сносим между клетками стену
     # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
+    for x in range(1, cols - 1, 2):
+        for y in range(1, rows - 1, 2):
+            remove_wall(grid, (y, x))
 
     # генерация входа и выхода
     if random_exit:
@@ -69,7 +86,12 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     :return:
     """
 
-    pass
+    exits = []
+    for y, row in enumerate(grid):
+        for x, _ in enumerate(row):
+            if grid[y][x] == 'X':
+                exits.append((y, x))
+    return exits
 
 
 def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
@@ -80,7 +102,35 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :return:
     """
 
-    pass
+    coords = []
+    for y, row in enumerate(grid):
+        for x, _ in enumerate(row):
+            if grid[x][y] == k:
+                coords.append((x, y))
+    grid_width, grid_height = len(grid[0]) - 1, len(grid) - 1
+    k += 1
+    for coord_x, coord_y in coords:
+        if coord_x in [0, grid_width] or coord_y in [0, grid_height]:
+            if coord_x in [0, grid_width]:
+                if coord_x == 0:
+                    grid[coord_x + 1][coord_y] = k
+                else:
+                    grid[coord_x - 1][coord_y] = k
+            else:
+                if coord_y == 0:
+                    grid[coord_x][coord_y + 1] = k
+                else:
+                    grid[coord_x][coord_y - 1] = k
+        else:
+            if grid[coord_x + 1][coord_y] == 0:
+                grid[coord_x + 1][coord_y] = k
+            if grid[coord_x - 1][coord_y] == 0:
+                grid[coord_x - 1][coord_y] = k
+            if grid[coord_x][coord_y + 1] == 0:
+                grid[coord_x][coord_y + 1] = k
+            if grid[coord_x][coord_y - 1] == 0:
+                grid[coord_x][coord_y - 1] = k
+    return grid
 
 
 def shortest_path(
@@ -92,7 +142,52 @@ def shortest_path(
     :param exit_coord:
     :return:
     """
-    pass
+    path = []
+    x, y = exit_coord
+    x1, y1 = exit_coord
+    k = grid[x][y]
+    grid_width, grid_height = len(grid[0]) - 1, len(grid) - 1
+    while len(path) != (grid[x1][y1] - 1):
+        path = []
+        while k != 1:
+            if x in [0, grid_width] or y in [0, grid_height]:
+                if x in [0, grid_width]:
+                    if x == 0 and grid[x + 1][y] == k - 1:
+                        k -= 1
+                        path.append((x + 1, y))
+                        x += 1
+                    elif grid[x - 1][y] == k - 1:
+                        k -= 1
+                        path.append((x - 1, y))
+                        x -= 1
+                else:
+                    if y == 0 and grid[x][y + 1] == k - 1:
+                        k -= 1
+                        path.append((x, y + 1))
+                        y += 1
+                    elif grid[x][y - 1] == k - 1:
+                        k -= 1
+                        path.append((x, y - 1))
+                        y -= 1
+            else:
+                dir = choice([(0, 1), (1, 0), (-1, 0), (0, -1)])
+                if dir == (1, 0) and grid[x + 1][y] == k - 1:
+                    k -= 1
+                    path.append((x + 1, y))
+                    x += 1
+                elif dir == (-1, 0) and grid[x - 1][y] == k - 1:
+                    k -= 1
+                    path.append((x - 1, y))
+                    x -= 1
+                elif dir == (0, 1) and grid[x][y + 1] == k - 1:
+                    k -= 1
+                    path.append((x, y + 1))
+                    y += 1
+                elif dir == (0, -1) and grid[x][y - 1] == k - 1:
+                    k -= 1
+                    path.append((x, y - 1))
+                    y -= 1
+    return path
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
@@ -103,7 +198,23 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :return:
     """
 
-    pass
+    y, x = coord
+    grid_height, grid_width = len(grid) - 1, len(grid[0]) - 1
+    if coord in [(0, 0), (0, grid_height), (grid_width, 0), (grid_width, grid_height)]:
+        return True
+    if x == 0:
+        if grid[x][y + 1] == '■' and grid[x][y - 1] == '■' and grid[x + 1][y] == '■':
+            return True
+    elif x == grid_width:
+        if grid[x][y + 1] == '■' and grid[x][y - 1] == '■' and grid[x - 1][y] == '■':
+            return True
+    elif y == 0:
+        if grid[x + 1][y] == '■' and grid[x - 1][y] == '■' and grid[x][y + 1] == '■':
+            return True
+    elif y == grid_height:
+        if grid[x + 1][y] == '■' and grid[x - 1][y] == '■' and grid[x][y - 1] == '■':
+            return True
+    return False
 
 
 def solve_maze(
@@ -115,7 +226,25 @@ def solve_maze(
     :return:
     """
 
-    pass
+    if len(get_exits(grid)) == 1:
+        return grid, get_exits(grid)[0]
+    grid1 = deepcopy(grid)
+    entry, exit = get_exits(grid1)[0], get_exits(grid1)[1]
+    x_e, y_e = entry
+    x1, y1 = exit
+    if encircled_exit(grid, entry) or encircled_exit(grid, exit):
+        return grid, None
+    for y in range(1, len(grid1) - 1):
+        for x in range(1, len(grid1[y]) - 1):
+            if grid1[x][y] != "■":
+                grid1[x][y] = 0
+    grid1[x_e][y_e], grid1[x1][y1] = 1, 0
+    k = 1
+    while grid1[x1][y1] == 0:
+        grid1 = make_step(grid1, k)
+        k += 1
+    short_path = shortest_path(grid1, (x1, y1))
+    return grid, short_path
 
 
 def add_path_to_grid(
