@@ -140,8 +140,9 @@ def shortest_path(
     y1, x1 = exit_coord
     k = int(grid[y][x])
     grid_width, grid_height = len(grid[0]) - 1, len(grid) - 1
-    while len(path) != (int(grid[y1][x1]) - 1):
+    while len(path) != (int(grid[y1][x1])):
         path = []
+        path.append((y1, x1))
         while k != 1:
             if x == 0 or x == grid_width or y == 0 or y == grid_height:
                 if x == 0 and grid[y][x + 1] == k - 1:
@@ -194,16 +195,16 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     if coord in [(0, 0), (grid_height, 0), (0, grid_width), (grid_height, grid_width)]:
         return True
     if x == 0:
-        if grid[y + 1][x] == "■" and grid[y - 1][x] == "■" and grid[y][x + 1] == "■":
+        if grid[y + 1][x] in ["■", "X"] and grid[y - 1][x] in ["■", "X"] and grid[y][x + 1] in ["■", "X"]:
             return True
     elif x == grid_width:
-        if grid[y + 1][x] == "■" and grid[y - 1][x] == "■" and grid[y][x - 1] == "■":
+        if grid[y + 1][x] in ["■", "X"] and grid[y - 1][x] in ["■", "X"] and grid[y][x - 1] in ["■", "X"]:
             return True
     elif y == 0:
-        if grid[y][x + 1] == "■" and grid[y][x - 1] == "■" and grid[y + 1][x] == "■":
+        if grid[y][x + 1] in ["■", "X"] and grid[y][x - 1] in ["■", "X"] and grid[y + 1][x] in ["■", "X"]:
             return True
     elif y == grid_height:
-        if grid[y][x + 1] == "■" and grid[y][x - 1] == "■" and grid[y - 1][x] == "■":
+        if grid[y][x + 1] in ["■", "X"] and grid[y][x - 1] in ["■", "X"] and grid[y - 1][x] in ["■", "X"]:
             return True
     return False
 
