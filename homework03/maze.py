@@ -1,5 +1,5 @@
 from copy import deepcopy
-from random import choice, randint
+from random import choice, randint, seed
 from typing import List, Optional, Tuple, Union
 
 import pandas as pd
@@ -108,13 +108,33 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     for coord_y, coord_x in coords:
         if coord_x == 0 or coord_x == grid_width or coord_y == 0 or coord_y == grid_height:
             if coord_x == 0:
-                grid[coord_y][coord_x + 1] = k
+                if grid[coord_y + 1][coord_x] == 0:
+                    grid[coord_y + 1][coord_x] = k
+                elif grid[coord_y - 1][coord_x] == 0:
+                    grid[coord_y - 1][coord_x] = k
+                else:
+                    grid[coord_y][coord_x + 1] = k
             elif coord_x == grid_width:
-                grid[coord_y][coord_x - 1] = k
+                if grid[coord_y + 1][coord_x] == 0:
+                    grid[coord_y + 1][coord_x] = k
+                elif grid[coord_y - 1][coord_x] == 0:
+                    grid[coord_y - 1][coord_x] = k
+                else:
+                    grid[coord_y][coord_x - 1] = k
             elif coord_y == 0:
-                grid[coord_y + 1][coord_x] = k
+                if grid[coord_y][coord_x + 1] == 0:
+                    grid[coord_y][coord_x + 1] = k
+                elif grid[coord_y][coord_x - 1] == 0:
+                    grid[coord_y][coord_x - 1] = k
+                else:
+                    grid[coord_y + 1][coord_x] = k
             else:
-                grid[coord_y - 1][coord_x] = k
+                if grid[coord_y][coord_x + 1] == 0:
+                    grid[coord_y][coord_x + 1] = k
+                elif grid[coord_y][coord_x - 1] == 0:
+                    grid[coord_y][coord_x - 1] = k
+                else:
+                    grid[coord_y - 1][coord_x] = k
         else:
             if grid[coord_y][coord_x + 1] == 0:
                 grid[coord_y][coord_x + 1] = k
@@ -145,22 +165,58 @@ def shortest_path(
         path.append((y1, x1))
         while k != 1:
             if x == 0 or x == grid_width or y == 0 or y == grid_height:
-                if x == 0 and grid[y][x + 1] == k - 1:
-                    k -= 1
-                    path.append((y, x + 1))
-                    x += 1
-                elif x == grid_width and grid[y][x - 1] == k - 1:
-                    k -= 1
-                    path.append((y, x - 1))
-                    x -= 1
-                elif y == 0 and grid[y + 1][x] == k - 1:
-                    k -= 1
-                    path.append((y + 1, x))
-                    y += 1
-                elif y == grid_height and grid[y - 1][x] == k - 1:
-                    k -= 1
-                    path.append((y - 1, x))
-                    y -= 1
+                if x == 0:
+                    if grid[y][x + 1] == k - 1:
+                        k -= 1
+                        path.append((y, x + 1))
+                        x += 1
+                    elif grid[y - 1][x] == k - 1:
+                        k -= 1
+                        path.append((y - 1, x))
+                        y -= 1
+                    elif grid[y + 1][x] == k - 1:
+                        k -= 1
+                        path.append((y + 1, x))
+                        y += 1
+                elif x == grid_width:
+                    if grid[y][x - 1] == k - 1:
+                        k -= 1
+                        path.append((y, x - 1))
+                        x -= 1
+                    elif grid[y - 1][x] == k - 1:
+                        k -= 1
+                        path.append((y - 1, x))
+                        y -= 1
+                    if grid[y + 1][x] == k - 1:
+                        k -= 1
+                        path.append((y + 1, x))
+                        y += 1
+                elif y == 0:
+                    if grid[y + 1][x] == k - 1:
+                        k -= 1
+                        path.append((y + 1, x))
+                        y += 1
+                    elif grid[y][x + 1] == k - 1:
+                        k -= 1
+                        path.append((y, x + 1))
+                        x += 1
+                    elif grid[y][x - 1] == k - 1:
+                        k -= 1
+                        path.append((y, x - 1))
+                        x -= 1
+                elif y == grid_height:
+                    if grid[y - 1][x] == k - 1:
+                        k -= 1
+                        path.append((y - 1, x))
+                        y -= 1
+                    elif grid[y][x + 1] == k - 1:
+                        k -= 1
+                        path.append((y, x + 1))
+                        x += 1
+                    elif grid[y][x - 1] == k - 1:
+                        k -= 1
+                        path.append((y, x - 1))
+                        x -= 1
             else:
                 dir = choice([(0, 1), (1, 0), (-1, 0), (0, -1)])
                 if dir == (1, 0) and grid[y][x + 1] == k - 1:
@@ -217,9 +273,11 @@ def solve_maze(
     :param grid:
     :return:
     """
-
     if len(get_exits(grid)) == 1:
-        return grid, get_exits(grid)[0]
+        if encircled_exit(grid, get_exits(grid)[0]):
+            return grid, None
+        else:
+            return grid, get_exits(grid)
     grid1 = deepcopy(grid)
     entry, exit = get_exits(grid1)[0], get_exits(grid1)[1]
     x_e, y_e = entry
@@ -259,8 +317,8 @@ def add_path_to_grid(
 
 
 if __name__ == "__main__":
-    print(pd.DataFrame(bin_tree_maze(5, 5)))
-    GRID = bin_tree_maze(5, 5)
+    print(pd.DataFrame(bin_tree_maze(15, 15)))
+    GRID = bin_tree_maze(15, 15)
     print(pd.DataFrame(GRID))
     _, PATH = solve_maze(GRID)
     MAZE = add_path_to_grid(GRID, PATH)
