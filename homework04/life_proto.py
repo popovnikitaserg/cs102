@@ -211,4 +211,3 @@ class GameOfLife:
                     if sum(neighbours) == 3:
                         new_grid[y][x] = 1
         return new_grid
-
