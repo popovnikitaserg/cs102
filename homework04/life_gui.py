@@ -39,13 +39,15 @@ class GUI(UI):
                 if grid[y][x] == 0:
                     coord_y = self.cell_size * y + 1
                     coord_x = self.cell_size * x + 1
-                    pygame.draw.rect(self.screen, pygame.Color("white"),
-                                     (coord_x, coord_y, self.cell_size - 1, self.cell_size - 1))
+                    pygame.draw.rect(
+                        self.screen, pygame.Color("white"), (coord_x, coord_y, self.cell_size - 1, self.cell_size - 1)
+                    )
                 if grid[y][x] == 1:
                     coord_y = self.cell_size * y + 1
                     coord_x = self.cell_size * x + 1
-                    pygame.draw.rect(self.screen, pygame.Color("green"),
-                                     (coord_x, coord_y, self.cell_size - 1, self.cell_size - 1))
+                    pygame.draw.rect(
+                        self.screen, pygame.Color("green"), (coord_x, coord_y, self.cell_size - 1, self.cell_size - 1)
+                    )
 
     def run(self) -> None:
         pygame.init()
@@ -113,6 +115,7 @@ class GUI(UI):
                     continue
             break
         pygame.quit()
+
 
 life = GUI(GameOfLife((30, 20)))
 life.run()

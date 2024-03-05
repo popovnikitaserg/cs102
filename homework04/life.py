@@ -36,8 +36,7 @@ class GameOfLife:
     def get_neighbours(self, cell: Cell) -> Cells:
         # Copy from previous assignment
         next_cells = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
-        special = [(0, 0), (self.rows - 1, 0), (0, self.cols - 1),
-                   (self.rows - 1, self.cols - 1)]
+        special = [(0, 0), (self.rows - 1, 0), (0, self.cols - 1), (self.rows - 1, self.cols - 1)]
         neighbours = []
         coord_y, coord_x = cell
 
@@ -124,7 +123,6 @@ class GameOfLife:
         self.curr_generation = self.get_next_generation()
         self.generations += 1
 
-
     @property
     def is_max_generations_exceeded(self) -> bool:
         """
@@ -155,9 +153,6 @@ class GameOfLife:
         life.curr_generation = new_grid
         return life
 
-
-
-
     def save(self, filename: pathlib.Path) -> None:
         """
         Сохранить текущее состояние клеток в указанный файл.
@@ -167,5 +162,3 @@ class GameOfLife:
                 for col, value in enumerate(row):
                     f.write(str(value))
                 f.write("\n")
-
-

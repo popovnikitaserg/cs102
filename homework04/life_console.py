@@ -13,8 +13,9 @@ class Console(UI):
         self.speed = 10
         self.begin_x = 20
         self.begin_y = 7
+
     def draw_borders(self, screen) -> None:
-        """ Отобразить рамку. """
+        """Отобразить рамку."""
         screen.clear()
         for i in range(1, self.height + 1):
             screen.addch(i, 0, "|", self.color)
@@ -29,9 +30,8 @@ class Console(UI):
         screen.refresh()
         screen.getch()
 
-
     def draw_grid(self, screen) -> None:
-        """ Отобразить состояние клеток. """
+        """Отобразить состояние клеток."""
         for i, row in enumerate(self.life.curr_generation):
             for j, value in enumerate(row):
                 if value == 1:
@@ -73,5 +73,6 @@ class Console(UI):
                 time.sleep(4)
         curses.endwin()
 
-cons = Console(GameOfLife((10,10)))
+
+cons = Console(GameOfLife((10, 10)))
 cons.run()
