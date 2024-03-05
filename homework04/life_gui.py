@@ -2,8 +2,9 @@ import pathlib
 
 import pygame
 import pygame.freetype
-from life import GameOfLife
 from pygame.locals import QUIT
+
+from life import GameOfLife
 from ui import UI
 
 

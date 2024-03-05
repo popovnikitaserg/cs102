@@ -1,5 +1,5 @@
-from random import randint as ri
 import typing as tp
+from random import randint as ri
 
 import pygame
 from pygame.locals import QUIT
