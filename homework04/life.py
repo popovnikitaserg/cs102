@@ -38,7 +38,7 @@ class GameOfLife:
         next_cells = [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)]
         special = [(0, 0), (self.rows - 1, 0), (0, self.cols - 1), (self.rows - 1, self.cols - 1)]
         neighbours = []
-        coord_y, coord_x = cell
+        c_y, c_x = cell
 
         if cell in special:
             if cell == special[0]:
@@ -48,52 +48,52 @@ class GameOfLife:
                     else:
                         neighbours.append(0)
             if cell == special[1]:
-                for y, x in [(coord_y, coord_x + 1), (coord_y - 1, coord_x + 1), (coord_y - 1, coord_x)]:
+                for y, x in [(c_y, c_x + 1), (c_y - 1, c_x + 1), (c_y - 1, c_x)]:
                     if self.curr_generation[y][x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
             if cell == special[2]:
-                for y, x in [(coord_y + 1, coord_x), (coord_y + 1, coord_x - 1), (coord_y, coord_x - 1)]:
+                for y, x in [(c_y + 1, c_x), (c_y + 1, c_x - 1), (c_y, c_x - 1)]:
                     if self.curr_generation[y][x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
             if cell == special[3]:
-                for y, x in [(coord_y - 1, coord_x), (coord_y - 1, coord_x - 1), (coord_y, coord_x - 1)]:
+                for y, x in [(c_y - 1, c_x), (c_y - 1, c_x - 1), (c_y, c_x - 1)]:
                     if self.curr_generation[y][x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
-        elif coord_y == 0 or coord_y == self.rows - 1 or coord_x == 0 or coord_x == self.cols - 1:
-            if coord_y == 0:
+        elif c_y == 0 or c_y == self.rows - 1 or c_x == 0 or c_x == self.cols - 1:
+            if c_y == 0:
                 for y, x in [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1)]:
-                    if self.curr_generation[coord_y + y][coord_x + x] == 1:
+                    if self.curr_generation[c_y + y][c_x + x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
-            if coord_y == self.rows - 1:
+            if c_y == self.rows - 1:
                 for y, x in [(0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)]:
-                    if self.curr_generation[coord_y + y][coord_x + x] == 1:
+                    if self.curr_generation[c_y + y][c_x + x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
-            if coord_x == 0:
+            if c_x == 0:
                 for y, x in [(-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0)]:
-                    if self.curr_generation[coord_y + y][coord_x + x] == 1:
+                    if self.curr_generation[c_y + y][c_x + x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
-            if coord_x == self.cols - 1:
+            if c_x == self.cols - 1:
                 for y, x in [(-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0)]:
-                    if self.curr_generation[coord_y + y][coord_x + x] == 1:
+                    if self.curr_generation[c_y + y][c_x + x] == 1:
                         neighbours.append(1)
                     else:
                         neighbours.append(0)
         else:
             for i in next_cells:
                 y, x = i
-                if self.curr_generation[coord_y + y][coord_x + x] == 1:
+                if self.curr_generation[c_y + y][c_x + x] == 1:
                     neighbours.append(1)
                 else:
                     neighbours.append(0)
@@ -144,7 +144,7 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        with open(filename) as f:
+        with open(filename, encoding="utf-8") as f:
             lines = [line.rstrip() for line in f]
             lines.remove("")
         new_grid = [[0] * len(lines[0]) for i in range(len(lines))]
@@ -159,8 +159,8 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        with open(filename, "w") as f:
-            for i, row in enumerate(self.curr_generation):
-                for col, value in enumerate(row):
+        with open(filename, "w", encoding="utf-8") as f:
+            for _, row in enumerate(self.curr_generation):
+                for _, value in enumerate(row):
                     f.write(str(value))
                 f.write("\n")

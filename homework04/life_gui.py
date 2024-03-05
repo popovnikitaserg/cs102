@@ -3,7 +3,7 @@ import pathlib
 import pygame
 import pygame.freetype
 from life import GameOfLife
-from pygame.locals import *
+from pygame.locals import QUIT
 from ui import UI
 
 
@@ -37,17 +37,15 @@ class GUI(UI):
         for y, value in enumerate(grid):
             for x, _ in enumerate(value):
                 if grid[y][x] == 0:
-                    coord_y = self.cell_size * y + 1
-                    coord_x = self.cell_size * x + 1
-                    pygame.draw.rect(
-                        self.screen, pygame.Color("white"), (coord_x, coord_y, self.cell_size - 1, self.cell_size - 1)
-                    )
+                    c_y = self.cell_size * y + 1
+                    c_x = self.cell_size * x + 1
+                    r_x, r_y = self.cell_size - 1, self.cell_size - 1
+                    pygame.draw.rect(self.screen, pygame.Color("white"), (c_x, c_y, r_x, r_y))
                 if grid[y][x] == 1:
-                    coord_y = self.cell_size * y + 1
-                    coord_x = self.cell_size * x + 1
-                    pygame.draw.rect(
-                        self.screen, pygame.Color("green"), (coord_x, coord_y, self.cell_size - 1, self.cell_size - 1)
-                    )
+                    c_y = self.cell_size * y + 1
+                    c_x = self.cell_size * x + 1
+                    r_x, r_y = self.cell_size - 1, self.cell_size - 1
+                    pygame.draw.rect(self.screen, pygame.Color("green"), (c_x, c_y, r_x, r_y))
 
     def run(self) -> None:
         pygame.init()
@@ -61,7 +59,7 @@ class GUI(UI):
             for event in pygame.event.get():
                 if event.type == QUIT:
                     break
-                elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:
                         state = pause
                     elif event.key == pygame.K_s:
@@ -73,12 +71,12 @@ class GUI(UI):
                     self.life.step()  # Выполнение одного шага игры (обновление состояния ячеек)
 
                     if not self.life.is_changing:
-                        game_font.render_to(self.screen, (40, 1), "Life is not changing!", (220, 0, 0))
+                        game_font.render_to(self.screen, (40, 1), "Life not changing!", (220, 0, 0))
                         running = False
                         pygame.display.flip()
                         pygame.time.delay(4000)
                     if self.life.is_max_generations_exceeded:
-                        game_font.render_to(self.screen, (40, 1), "Max generations exceeded!", (220, 0, 0))
+                        game_font.render_to(self.screen, (40, 1), "Max gen exceeded!", (220, 0, 0))
                         running = False
                         pygame.display.flip()
                         pygame.time.delay(4000)
@@ -115,7 +113,3 @@ class GUI(UI):
                     continue
             break
         pygame.quit()
-
-
-life = GUI(GameOfLife((30, 20)))
-life.run()
