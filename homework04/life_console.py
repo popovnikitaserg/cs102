@@ -1,6 +1,6 @@
 import curses
 import time
-import pathlib
+
 from life import GameOfLife
 from ui import UI
 
