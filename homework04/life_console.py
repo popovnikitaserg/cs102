@@ -22,7 +22,7 @@ class Console(UI):
         self.color = curses.color_pair(1)
         self.color_green = curses.color_pair(2)
         self.color_red = curses.color_pair(3)
-        self.key = None
+        self.key = 1
 
     def draw_borders(self) -> None:
         """Отобразить рамку."""
