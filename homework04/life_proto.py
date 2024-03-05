@@ -212,6 +212,3 @@ class GameOfLife:
                         new_grid[y][x] = 1
         return new_grid
 
-
-game = GameOfLife(640, 400, 20)
-game.run()
