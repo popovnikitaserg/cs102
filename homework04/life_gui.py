@@ -34,14 +34,14 @@ class GUI(UI):
 
     def draw_grid(self) -> None:
         grid = self.life.curr_generation
-        for y, value in enumerate(grid):
-            for x, _ in enumerate(value):
-                if grid[y][x] == 0:
+        for y, row in enumerate(grid):
+            for x, value in enumerate(row):
+                if value == 0:
                     c_y = self.cell_size * y + 1
                     c_x = self.cell_size * x + 1
                     r_x, r_y = self.cell_size - 1, self.cell_size - 1
                     pygame.draw.rect(self.screen, pygame.Color("white"), (c_x, c_y, r_x, r_y))
-                if grid[y][x] == 1:
+                if value == 1:
                     c_y = self.cell_size * y + 1
                     c_x = self.cell_size * x + 1
                     r_x, r_y = self.cell_size - 1, self.cell_size - 1
