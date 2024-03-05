@@ -4,7 +4,6 @@ import pygame
 import pygame.freetype
 from life import GameOfLife
 from pygame.locals import QUIT
-
 from ui import UI
 
 
