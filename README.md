@@ -4,3 +4,5 @@
 Практика 2: https://colab.research.google.com/drive/1ae6TG22XcLv3GnfIowJqEGqBGSLr8XNK?usp=sharing
 
 Практика 3: https://colab.research.google.com/drive/1HNhACtKeMDiC0DQpFivTXS1GfHb2erxz?usp=sharing
+
+Лаб.2: https://colab.research.google.com/drive/1RYy3pq2bTvvL8Ogs_Ba1dniYpiodtEvU?usp=sharing 
