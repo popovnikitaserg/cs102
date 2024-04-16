@@ -3,16 +3,16 @@ import webbrowser
 
 
 def get_access_token(client_id: int, scope: str) -> None:
-    assert isinstance(client_id, int), "clinet_id must be positive integer"
+    assert isinstance(client_id, int), "client_id must be positive integer"
     assert isinstance(scope, str), "scope must be string"
-    assert client_id > 0, "clinet_id must be positive integer"
+    assert client_id > 0, "client_id must be positive integer"
     url = f"""\
     https://oauth.vk.com/authorize?client_id={client_id}&\
     redirect_uri=https://oauth.vk.com/blank.hmtl&\
     scope={scope}&\
     &response_type=token&\
     display=page&\
-    v=5.102\
+    v=5.199\
     """.replace(
         " ", ""
     )
