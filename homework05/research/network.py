@@ -10,21 +10,28 @@ from vkapi.friends import get_friends, get_mutual
 
 
 def ego_network(
-    user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None, 
-    with_labels: bool = True) -> tp.List[tp.Tuple[int, int]]:
+    user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None) -> tp.List[tp.Tuple[int, int]]:
     """
     Построить эгоцентричный граф друзей.
 
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
-    :param with_labels: Наносить на граф имена пользователей.
     """
     pass
 
 
-def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
+def plot_ego_network(net: tp.List[tp.Tuple[int, int]], with_labels: bool = True) -> None:
+    """
+    Отрисовать эгоцентричный граф друзей.
+
+    :param net: Граф, созданный с помощью функции ego_network.
+    :param with_labels: Наносить или нет на граф имена пользователей.
+    """
     graph = nx.Graph()
     graph.add_edges_from(net)
+
+    # put your code here
+
     layout = nx.spring_layout(graph)
     nx.draw(graph, layout, node_size=10, node_color="black", alpha=0.5)
     plt.title("Ego Network", size=15)
