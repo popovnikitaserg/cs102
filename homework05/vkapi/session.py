@@ -34,8 +34,17 @@ class Session:
         session.mount("http://", adapter)
         session.mount("https://", adapter)
         url = "/" + url
-        response = session.get(url=self.base_url + url, timeout=kwargs["timeout"] if "timeout" in kwargs else self.timeout, data=kwargs)
+        response = session.get(url=self.base_url + url, timeout=kwargs["timeout"] if "timeout" in kwargs else self.timeout)
         return response
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+        retry_strat = Retry(total=self.max_retries, backoff_factor=self.backoff_factor,
+                            status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry_strat)
+        session = requests.Session()
+        session.mount("http://", adapter)
+        session.mount("https://", adapter)
+        url = "/" + url
+        response = session.post(url=self.base_url + url, data=kwargs)
+        return response
+
