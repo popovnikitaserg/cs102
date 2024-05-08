@@ -1,7 +1,7 @@
 import typing as tp
 
-import requests #type: ignore
-from requests.adapters import HTTPAdapter #type: ignore
+import requests  # type: ignore
+from requests.adapters import HTTPAdapter  # type: ignore
 from urllib3.util import Retry
 
 
