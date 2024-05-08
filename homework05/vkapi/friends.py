@@ -1,10 +1,8 @@
 import dataclasses
-import math
 import time
 import typing as tp
 
 from vkapi import config, session
-from vk_api.exceptions import ApiError
 
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
 
