@@ -10,12 +10,13 @@ def get_access_token(client_id: int, scope: str) -> None:
     https://oauth.vk.com/authorize?client_id={client_id}&\
     redirect_uri=https://oauth.vk.com/blank.hmtl&\
     scope={scope}&\
-    &response_type=token&\
+    response_type=token&\
     display=page&\
     v=5.199\
     """.replace(
         " ", ""
     )
+    print(url)
     webbrowser.open_new_tab(url)
 
 

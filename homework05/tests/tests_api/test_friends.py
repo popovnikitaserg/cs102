@@ -20,6 +20,7 @@ class FriendsTestCase(unittest.TestCase):
         fids = get_friends(user_id=1)
         expected_response = FriendsResponse(count=len(expected_fids), items=expected_fids)
         self.assertEqual(expected_response, fids)
+        print(fids)
 
     @responses.activate
     def test_get_mutual(self):
