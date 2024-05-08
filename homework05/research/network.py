@@ -9,7 +9,8 @@ from vkapi.friends import get_friends, get_mutual
 
 
 def ego_network(
-    user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None) -> tp.List[tp.Tuple[int, int]]:
+    user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None
+) -> tp.List[tp.Tuple[int, int]]:
     """
     Построить эгоцентричный граф друзей.
 
@@ -19,8 +20,9 @@ def ego_network(
     graph = set()
     if friends is None:
         target_uids = get_friends(user_id=user_id).items
-        active_users = [user["id"] for user in target_uids if
-                        user.get("deactivated") is None and not user.get("is_closed")]
+        active_users = [
+            user["id"] for user in target_uids if user.get("deactivated") is None and not user.get("is_closed")
+        ]
         for i in target_uids:
             graph.add((user_id, i["id"]))
         mutual_friends = get_mutual(source_uid=user_id, target_uids=active_users)
@@ -34,10 +36,6 @@ def ego_network(
                 if i["id"] != None and j != None:
                     graph.add((i["id"], j))
     return list(graph)
-
-
-
-
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]], with_labels: bool = True) -> None:

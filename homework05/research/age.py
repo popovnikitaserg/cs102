@@ -19,7 +19,7 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     years = []
     for i in friends.items:
         try:
-            years.append(i['bdate'])
+            years.append(i["bdate"])
         except:
             pass
     years = [i[-4:] for i in years]
