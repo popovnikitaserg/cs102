@@ -10,32 +10,32 @@ from vkapi.friends import get_friends, get_mutual
 
 def ego_network(
     user_id: tp.Optional[int] = None, friends: tp.Optional[tp.List[int]] = None
-) -> tp.List[tp.Tuple[int, int]]:
+) -> tp.List[tp.Tuple[int | None, tp.Any]]:
     """
     Построить эгоцентричный граф друзей.
 
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    graph = set()
+    graph = []
     if friends is None:
         target_uids = get_friends(user_id=user_id).items
         active_users = [
             user["id"] for user in target_uids if user.get("deactivated") is None and not user.get("is_closed")
         ]
         for i in target_uids:
-            graph.add((user_id, i["id"]))
+            graph.append((user_id, i["id"]))
         mutual_friends = get_mutual(source_uid=user_id, target_uids=active_users)
-        for i in mutual_friends:
-            for j in i["common_friends"]:
-                graph.add((i["id"], j))
+        for k in mutual_friends:
+            for j in k["common_friends"]:
+                graph.append((k["id"], j))
     else:
         mutual_friends = get_mutual(source_uid=user_id, target_uids=friends)
-        for i in mutual_friends:
-            for j in i["common_friends"]:
-                if i["id"] != None and j != None:
-                    graph.add((i["id"], j))
-    return list(graph)
+        for k in mutual_friends:
+            for j in k["common_friends"]:
+                if k["id"] != None and j != None:
+                    graph.append((k["id"], j))
+    return graph
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]], with_labels: bool = True) -> None:
