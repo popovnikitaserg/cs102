@@ -15,7 +15,6 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     :return: Медианный возраст пользователя.
     """
     friends = get_friends(user_id=user_id, fields=["bdate"])
-    print(friends)
     years = []
     for i in friends.items:
         try:
@@ -28,3 +27,5 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     ages = [2024 - int(i) for i in years]
     ages = sorted(ages)
     return ages[len(ages) // 2] if len(ages) > 0 else None
+
+print(age_predict(user_id=236997128))
