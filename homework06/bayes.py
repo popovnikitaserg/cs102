@@ -1,5 +1,6 @@
-from collections import defaultdict, Counter
+from collections import Counter
 from math import log
+
 
 class NaiveBayesClassifier:
 
