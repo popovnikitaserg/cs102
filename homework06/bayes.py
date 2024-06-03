@@ -3,12 +3,11 @@ from math import log
 
 
 class NaiveBayesClassifier:
-
     def __init__(self, alpha=1):
         self.alpha = alpha
 
     def fit(self, X, y):
-        """ Fit Naive Bayes classifier according to X, y. """
+        """Fit Naive Bayes classifier according to X, y."""
         all_words = []
         for sentence in X:
             all_words.extend(sentence.split())
@@ -37,14 +36,15 @@ class NaiveBayesClassifier:
                 if word not in sep[cl]:
                     counter_cl[cl][word] += 0
 
-        self.P_classes = {i: {} for i in set(y)} #Вероятность для каждого слова в каждом классе
+        self.P_classes = {i: {} for i in set(y)}  # Вероятность для каждого слова в каждом классе
         for cl in counter_cl:
             for word, counter in dict(counter_cl[cl]).items():
-                self.P_classes[cl][word] = (counter + self.alpha) / (all_words.count(word) + self.alpha * counter_cl[cl].total())
-
+                self.P_classes[cl][word] = (counter + self.alpha) / (
+                    all_words.count(word) + self.alpha * counter_cl[cl].total()
+                )
 
     def predict(self, X):
-        """ Perform classification on an array of test vectors X. """
+        """Perform classification on an array of test vectors X."""
         predictions = []
         for line in X:
             cls_belonging = {}
@@ -59,10 +59,8 @@ class NaiveBayesClassifier:
             predictions.append(max(cls_belonging, key=cls_belonging.get))
         return predictions
 
-
-
     def score(self, X_test, y_test):
-        """ Returns the mean accuracy on the given test data and labels. """
+        """Returns the mean accuracy on the given test data and labels."""
         good = 0
         bad = 0
         total_cases = len(y_test)

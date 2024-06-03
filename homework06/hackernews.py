@@ -10,7 +10,7 @@ from scraputils import get_news
 def news_list():
     s = session()
     rows = s.query(News).filter(News.label == None).all()
-    return template('news_template', rows=rows)
+    return template("news_template", rows=rows)
 
 
 @route("/add_label/")
@@ -73,10 +73,10 @@ def classify_news():
     return ans
 
 
-@route('/recommendations')
+@route("/recommendations")
 def recommendations():
     classified_news = classify_news()
-    return template('recs_template', rows=classified_news)
+    return template("recs_template", rows=classified_news)
 
 
 if __name__ == "__main__":

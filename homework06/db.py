@@ -16,4 +16,5 @@ class News(Base):
     points = Column(Integer)
     label = Column(String)
 
+
 Base.metadata.create_all(bind=engine)
